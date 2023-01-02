@@ -12,21 +12,13 @@ namespace FilmesApi.Services
 {
     public class CinemaService
     {
-        private AppDbContext _context;
         private IMapper _mapper;
+        private AppDbContext _context;
 
-        public CinemaService(AppDbContext context, IMapper mapper)
+        public CinemaService(IMapper mapper, AppDbContext context)
         {
-            _context = context;
             _mapper = mapper;
-        }
-
-        public ReadCinemaDto AdicionaCinema(CreateCinemaDto cinemaDto)
-        {
-            Cinema cinema = _mapper.Map<Cinema>(cinemaDto);
-            _context.Cinemas.Add(cinema);
-            _context.SaveChanges();
-            return _mapper.Map<ReadCinemaDto>(cinema);
+            _context = context;
         }
 
         public List<ReadCinemaDto> RecuperaCinemas(string nomeDoFilme)
@@ -48,16 +40,23 @@ namespace FilmesApi.Services
             return _mapper.Map<List<ReadCinemaDto>>(cinemas);
         }
 
-        public ReadCinemaDto RecuperaCinemasPorId(int? id)
+        public ReadCinemaDto AdicionaCinema(CreateCinemaDto cinemaDto)
+        {
+            Cinema cinema = _mapper.Map<Cinema>(cinemaDto);
+            _context.Cinemas.Add(cinema);
+            _context.SaveChanges();
+            return _mapper.Map<ReadCinemaDto>(cinema);
+        }
+
+        public ReadCinemaDto RecuperaCinemasPorId(int id)
         {
             Cinema cinema = _context.Cinemas.FirstOrDefault(cinema => cinema.Id == id);
             if (cinema != null)
             {
-                ReadCinemaDto cinemaDto = _mapper.Map<ReadCinemaDto>(cinema);
-                return cinemaDto;
+                return _mapper.Map<ReadCinemaDto>(cinema);
             }
             return null;
-        }        
+        }
 
         public Result AtualizaCinema(int id, UpdateCinemaDto cinemaDto)
         {

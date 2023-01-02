@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GerentesApi.Services
+namespace FilmesApi.Services
 {
     public class GerenteService
     {
@@ -21,15 +21,15 @@ namespace GerentesApi.Services
             _mapper = mapper;
         }
 
-        public ReadGerenteDto AdicionaGerente(CreateGerenteDto gerenteDto)
+        public ReadGerenteDto AdicionaGerente(CreateGerenteDto dto)
         {
-            Gerente gerente = _mapper.Map<Gerente>(gerenteDto);
+            Gerente gerente = _mapper.Map<Gerente>(dto);
             _context.Gerentes.Add(gerente);
             _context.SaveChanges();
             return _mapper.Map<ReadGerenteDto>(gerente);
         }
 
-        public ReadGerenteDto RecuperaGerentesPorId(int? id)
+        public ReadGerenteDto RecuperaGerentesPorId(int id)
         {
             Gerente gerente = _context.Gerentes.FirstOrDefault(gerente => gerente.Id == id);
             if (gerente != null)
@@ -41,7 +41,7 @@ namespace GerentesApi.Services
             return null;
         }
 
-        public Result DeletaGerente(int id)
+        internal Result DeleteGerente(int id)
         {
             Gerente gerente = _context.Gerentes.FirstOrDefault(gerente => gerente.Id == id);
             if (gerente == null)

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -21,10 +21,16 @@ namespace UsuariosApi.Services
                 new Claim("id", usuario.Id.ToString())
             };
 
-            var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("0asdjas09djsa09djasdjsadajsd09asjd09sajcnzxn"));
+            var chave = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("0asdjas09djsa09djasdjsadajsd09asjd09sajcnzxn")
+                );
             var credenciais = new SigningCredentials(chave, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(claims: direitosUsuario, signingCredentials: credenciais, expires: DateTime.UtcNow.AddHours(1));
+            var token = new JwtSecurityToken(
+                claims: direitosUsuario,
+                signingCredentials: credenciais,
+                expires: DateTime.UtcNow.AddHours(1)
+                );
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
             return new Token(tokenString);

@@ -2,8 +2,8 @@
 using FilmesApi.Data;
 using FilmesApi.Data.Dtos.Gerente;
 using FilmesApi.Models;
+using FilmesApi.Services;
 using FluentResults;
-using GerentesApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,9 +24,9 @@ namespace FilmesApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult AdicionaGerente([FromBody] CreateGerenteDto gerenteDto)
+        public IActionResult AdicionaGerente(CreateGerenteDto dto)
         {
-            ReadGerenteDto readDto = _gerenteService.AdicionaGerente(gerenteDto);
+            ReadGerenteDto readDto = _gerenteService.AdicionaGerente(dto);
             return CreatedAtAction(nameof(RecuperaGerentesPorId), new { Id = readDto.Id }, readDto);
         }
 
@@ -34,14 +34,14 @@ namespace FilmesApi.Controllers
         public IActionResult RecuperaGerentesPorId(int id)
         {
             ReadGerenteDto readDto = _gerenteService.RecuperaGerentesPorId(id);
-            if (readDto != null) return Ok(readDto);
-            return NotFound();
+            if (readDto == null) return NotFound();
+            return Ok(readDto);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeletaGerente(int id)
         {
-            Result resultado = _gerenteService.DeletaGerente(id);
+            Result resultado = _gerenteService.DeleteGerente(id);
             if (resultado.IsFailed) return NotFound();
             return NoContent();
         }

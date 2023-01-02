@@ -4,23 +4,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UsuariosApi.Data.Requests;
+using UsuariosApi.Models;
 
 namespace UsuariosApi.Services
 {
     public class LogoutService
     {
-        private SignInManager<IdentityUser<int>> _signinManager;
+        private SignInManager<IdentityUser<int>> _signInManager;
 
-        public LogoutService(SignInManager<IdentityUser<int>> signinManager)
+        public LogoutService(SignInManager<IdentityUser<int>> signInManager)
         {
-            _signinManager = signinManager;
+            _signInManager = signInManager;
         }
 
         public Result DeslogaUsuario()
         {
-            var resultadoIdentity = _signinManager.SignOutAsync();
-            if (resultadoIdentity.IsCompletedSuccessfully) return Result.Ok();
+            Task resultadoIdentity = _signInManager.SignOutAsync();
+
+            if (resultadoIdentity.IsCompletedSuccessfully)
+            {
+                return Result.Ok();
+            }            
             return Result.Fail("Logout falhou");
+
         }
     }
 }

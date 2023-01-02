@@ -39,7 +39,7 @@ namespace FilmesApi.Services
             return _mapper.Map<List<ReadEnderecoDto>>(enderecos);
         }
 
-        public ReadEnderecoDto RecuperaEnderecosPorId(int id)
+        internal ReadEnderecoDto RecuperaEnderecosPorId(int id)
         {
             Endereco endereco = _context.Enderecos.FirstOrDefault(endereco => endereco.Id == id);
             if (endereco != null)
@@ -63,7 +63,7 @@ namespace FilmesApi.Services
             return Result.Ok();
         }
 
-        public Result DeletaEndereco(int id)
+        internal Result DeletaEndereco(int id)
         {
             Endereco endereco = _context.Enderecos.FirstOrDefault(endereco => endereco.Id == id);
             if (endereco == null)
@@ -75,5 +75,4 @@ namespace FilmesApi.Services
             return Result.Ok();
         }
     }
-
 }

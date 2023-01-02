@@ -18,7 +18,6 @@ namespace FilmesAPI.Controllers
     [Route("[controller]")]
     public class FilmeController : ControllerBase
     {
-
         private FilmeService _filmeService;
 
         public FilmeController(FilmeService filmeService)
@@ -26,11 +25,10 @@ namespace FilmesAPI.Controllers
             _filmeService = filmeService;
         }
 
-
         [HttpPost]
         public IActionResult AdicionaFilme([FromBody] CreateFilmeDto filmeDto)
         {
-            ReadFilmeDto readDto =_filmeService.AdicionaFilme(filmeDto);
+            ReadFilmeDto readDto = _filmeService.AdicionaFilme(filmeDto);
             return CreatedAtAction(nameof(RecuperaFilmesPorId), new { Id = readDto.Id }, readDto);
         }
 
@@ -38,16 +36,17 @@ namespace FilmesAPI.Controllers
         public IActionResult RecuperaFilmes([FromQuery] int? classificacaoEtaria = null)
         {
             List<ReadFilmeDto> readDto = _filmeService.RecuperaFilmes(classificacaoEtaria);
-            if (readDto != null) return Ok(readDto);
-            return NotFound();
+            if (readDto == null) return NotFound();
+            return Ok(readDto);
         }
 
         [HttpGet("{id}")]
         public IActionResult RecuperaFilmesPorId(int id)
         {
             ReadFilmeDto readDto = _filmeService.RecuperaFilmesPorId(id);
-            if (readDto != null) return Ok(readDto);
-            return NotFound();
+            if (readDto == null) return NotFound();
+            return Ok(readDto);
+            
         }
 
         [HttpPut("{id}")]

@@ -50,7 +50,7 @@ namespace FilmesApi.Services
             return null;
         }
 
-        public ReadFilmeDto RecuperaFilmesPorId(int? id)
+        public ReadFilmeDto RecuperaFilmesPorId(int id)
         {
             Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
             if (filme != null)
