@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using UsuariosApi.Models;
 
 namespace UsuariosApi.Data
 {
-    public class UserDbContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
+    public class UserDbContext : IdentityDbContext<CustomIdentityUser, IdentityRole<int>, int>
     {
+
         private IConfiguration _configuration;
 
         public UserDbContext(DbContextOptions<UserDbContext> opt, IConfiguration configuration) : base(opt)
@@ -19,7 +21,7 @@ namespace UsuariosApi.Data
         {
             base.OnModelCreating(builder);
 
-            IdentityUser<int> admin = new IdentityUser<int>
+            CustomIdentityUser admin = new CustomIdentityUser
             {
                 UserName = "admin",
                 NormalizedUserName = "ADMIN",
@@ -30,11 +32,12 @@ namespace UsuariosApi.Data
                 Id = 99999
             };
 
-            PasswordHasher<IdentityUser<int>> hasher = new PasswordHasher<IdentityUser<int>>();
+            PasswordHasher<CustomIdentityUser> hasher = new PasswordHasher<CustomIdentityUser>();
 
-            admin.PasswordHash = hasher.HashPassword(admin, _configuration.GetValue<string>("admininfo:password"));
+            admin.PasswordHash = hasher.HashPassword(admin, 
+                _configuration.GetValue<string>("admininfo:password"));
 
-            builder.Entity<IdentityUser<int>>().HasData(admin);
+            builder.Entity<CustomIdentityUser>().HasData(admin);
 
             builder.Entity<IdentityRole<int>>().HasData(
                 new IdentityRole<int> { Id = 99999, Name = "admin", NormalizedName = "ADMIN" }
@@ -46,7 +49,11 @@ namespace UsuariosApi.Data
 
             builder.Entity<IdentityUserRole<int>>().HasData(
                 new IdentityUserRole<int> { RoleId = 99999, UserId = 99999 }
-            );
+                );
+
+
+
         }
+
     }
 }

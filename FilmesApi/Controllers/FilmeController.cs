@@ -1,17 +1,9 @@
-﻿
-using AutoMapper;
-using FilmesApi.Data;
-using FilmesApi.Services;
-using FilmesAPI.Data;
+﻿using FilmesApi.Services;
 using FilmesAPI.Data.Dtos;
-using FilmesAPI.Models;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FilmesAPI.Controllers
 {
@@ -35,7 +27,7 @@ namespace FilmesAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "admin, regular")]
+        [Authorize(Roles = "admin, regular", Policy = "IdadeMinima")]
         public IActionResult RecuperaFilmes([FromQuery] int? classificacaoEtaria = null)
         {
             List<ReadFilmeDto> readDto = _filmeService.RecuperaFilmes(classificacaoEtaria);
@@ -67,5 +59,6 @@ namespace FilmesAPI.Controllers
             if (resultado.IsFailed) return NotFound();
             return NoContent();
         }
+
     }
 }
